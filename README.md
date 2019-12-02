@@ -17,7 +17,7 @@ CentOS 6.5+:
 sudo yum install fuse
 ```
 ### 二进制文件
-为方便用户使用，提供了二进制可执行程序chdfs-fuse。
+为方便用户使用，提供了二进制可执行程序chdfs-fuse。[下载地址](https://github.com/tencentyun/chdfs-fuse/releases)
 
 
 ## 运行
