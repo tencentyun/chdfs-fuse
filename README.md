@@ -24,14 +24,14 @@ sudo yum install fuse
 ### 挂载
 - 普通模式
 ```bash
-chmod +x ./chdfs-fuse
+chmod +x ./bin/chdfs-fuse
 #创建本地挂载目录
 mkdir /mnt/chdfstest
-./chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml
+./bin/chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml
 ```
 - 调试模式（查看fuse接口调用）
  ```bash
-./chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml
+./bin/chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml
  ```
  
 ### 取消挂载
@@ -133,7 +133,7 @@ max-backups=100
 chdfs-fuse用go语言实现，runtime在释放内存时默认行为是MADV_FREE。读写文件完成后，若观察到chdfs-fuse占用的内存没有下降，表示此时gc的内存空间没有返回给操作系统，但不影响其他进程运行，若其他进程抢占内存空间，chdfs-fuse占用的内存会迅速下降。
 当然，释放内存也可以强制采用MADV_DONTNEED行为，读写文件完成后，gc的内存空间会返回给操作系统。
 ```bash
-GODEBUG=madvdontneed=1 ./chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml
+GODEBUG=madvdontneed=1 ./bin/chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml
 ```
 - MADV_DONTNEED
 表示应用程序不希望很快访问此地址范围。
