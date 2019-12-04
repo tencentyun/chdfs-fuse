@@ -1,8 +1,5 @@
-#[security]
-#ssl-ca-path="/etc/ssl/certs/ca-bundle.crt"
-
 [proxy]
-url="https://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com:443"
+url="http://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com"
 
 [client]
 mount-point="f4mxxxxxxxx-xxxx"
@@ -19,6 +16,7 @@ read-ahead-block-num=63
 [cache.write]
 max-mem-table-range-num=32
 max-mem-table-size-mb=64
+#请指定合适的qps参数
 max-cos-flush-qps=32
 flush-thread-num=64
 flush-queue-len=64

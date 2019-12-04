@@ -33,18 +33,39 @@ mkdir /mnt/chdfstest
  ```bash
 ./bin/chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml
  ```
+- 允许其他用户访问
+ ```bash
+./bin/chdfs-fuse -debug -allow_other /mnt/chdfstest/ --config=./conf/config.toml
+ ```
  
 ### 取消挂载
 ```bash
-fusermount -u /mnt/chdfstest/
+umount /mnt/chdfstest/
 ```
+如果遇到类似“umount: /mnt/chdfstest/: target is busy.”等字样，通常是由于挂载点正在被使用，导致无法直接卸载，建议先查看在使用的进程：
+```bash
+fuser -mv /mnt/chdfstest/
+```
+再杀死占用的进程：
+```bash
+fuser -kv /mnt/chdfstest/
+```
+再次查看（仅剩kernel占用为止）：
+```bash
+fuser -mv /mnt/chdfstest/
+```
+再使用卸载命令：
+```bash
+umount /mnt/chdfstest/
+```
+注意：
+- 可以使用fuser -kv /mnt/chdfstest/进行kill进程。
+- 也可以使用kill命令杀掉对应的进程 。
+- 强制kill进程可能会导致数据丢失，请确保数据得到有效备份后，再进行相关操作。
 ### 配置样例
 ```text
-#[security]
-#ssl-ca-path="/etc/ssl/certs/ca-bundle.crt"
-
 [proxy]
-url="https://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com:443"
+url="http://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com"
 
 [client]
 mount-point="f4mxxxxxxxx-xxxx"
@@ -80,12 +101,12 @@ max-backups=100
 ### 配置介绍
 |名称|默认值|描述|
 |-|-|-|
-|proxy.url|-|远程挂载地址，例：https://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com:443|
+|proxy.url|-|远程挂载地址，例：http://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com|
 |security.ssl-ca-path|-|CA路径，例：/etc/ssl/certs/ca-bundle.crt|
 |client.renew-session-lease-time-sec|10|会话续租时间（s）|
 |client.mount-point|-|远程挂载点，例：f4mxxxxxxxx-xxxx|
-|client.uid|当前用户Uid|用户Uid|
-|client.gid|当前用户Gid|用户Gid|
+|client.user|当前用户名|用户名|
+|client.group|当前组名|组名|
 |cache.latch-num|10|Fd哈希槽数量|
 |cache.update-sts-time-sec|30|数据读写临时密钥刷新时间（s）|
 |cache.cos-client-timeout-sec|5|数据上传/下载超时时间（s）|
