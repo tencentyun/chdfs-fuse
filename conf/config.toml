@@ -12,15 +12,18 @@ cos-client-timeout-sec=5
 [cache.read]
 block-expired-time-sec=10
 max-block-num=256
-read-ahead-block-num=63
+read-ahead-block-num=15
+#请指定合适的qps参数
+max-cos-load-qps=1024
+load-thread-num=128
+select-thread-num=64
 [cache.write]
 max-mem-table-range-num=32
 max-mem-table-size-mb=64
 #请指定合适的qps参数
-max-cos-flush-qps=32
-flush-thread-num=64
-flush-queue-len=64
-commit-queue-len=50
+max-cos-flush-qps=256
+flush-thread-num=128
+commit-queue-len=100
 max-commit-heap-size=500
 
 [log]

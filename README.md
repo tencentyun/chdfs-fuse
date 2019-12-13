@@ -27,17 +27,21 @@ sudo yum install fuse
 chmod +x ./bin/chdfs-fuse
 #创建本地挂载目录
 mkdir /mnt/chdfstest
-./bin/chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml
+./bin/chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml &
 ```
 - 调试模式（查看fuse接口调用）
  ```bash
-./bin/chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml
+./bin/chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml &
  ```
 - 允许其他用户访问
  ```bash
-./bin/chdfs-fuse -debug -allow_other /mnt/chdfstest/ --config=./conf/config.toml
+./bin/chdfs-fuse -debug -allow_other /mnt/chdfstest/ --config=./conf/config.toml &
  ```
- 
+ 如果遇到类似“/mnt/chdfstest: Transport endpoint is not connected”等字样，通常是由于强杀进程导致无法重新挂载，建议先umount再mount：
+```bash
+ umount /mnt/chdfstest
+ ./bin/chdfs-fuse /mnt/chdfstest/ -config=./conf/config.toml &
+```
 ### 取消挂载
 ```bash
 umount /mnt/chdfstest/
@@ -78,14 +82,16 @@ cos-client-timeout-sec=5
 [cache.read]
 block-expired-time-sec=10
 max-block-num=256
-read-ahead-block-num=63
+read-ahead-block-num=15
+max-cos-load-qps=1024
+load-thread-num=128
+select-thread-num=64
 [cache.write]
 max-mem-table-range-num=32
 max-mem-table-size-mb=64
-max-cos-flush-qps=32
-flush-thread-num=64
-flush-queue-len=64
-commit-queue-len=50
+max-cos-flush-qps=256
+flush-thread-num=128
+commit-queue-len=100
 max-commit-heap-size=500
 
 [log]
@@ -112,13 +118,15 @@ max-backups=100
 |cache.cos-client-timeout-sec|5|数据上传/下载超时时间（s）|
 |cache.read.block-expired-time-sec|10|【读操作】单Fd数据读缓存有效时间（s）（block粒度）|
 |cache.read.max-block-num|256|【读操作】单Fd数据读缓存block最大数量|
-|cache.read.read-ahead-block-num|63|【读操作】单Fd预读block数量|
+|cache.read.read-ahead-block-num|15|【读操作】单Fd预读block数量（read-ahead-block-num < max-block-num）|
+|cache.read.max-cos-load-qps|1024|【读操作】多Fd数据下载最大QPS（QPS * 1M < 网卡带宽）|
+|cache.read.load-thread-num|128|【读操作】多Fd数据下载worker数量|
+|cache.read.select-thread-num|64|【读操作】多Fd元数据查询队列长度|
 |cache.write.max-mem-table-range-num|32|【写操作】单Fd当前数据写缓存range最大数量|
 |cache.write.mem-table-size-mb|64|【写操作】单Fd当前数据写缓存最大容量（MB）|
-|cache.write.max-cos-flush-qps|32|【写操作】多Fd数据上传最大QPS（QPS * BlockSize < 网卡带宽）|
-|cache.write.flush-thread-num|64|【写操作】多Fd数据上传worker数量|
-|cache.write.flush-queue-len|64|【写操作】多Fd数据上传队列长度|
-|cache.write.commit-queue-len|50|【写操作】单Fd元数据提交队列长度|
+|cache.write.max-cos-flush-qps|256|【写操作】多Fd数据上传最大QPS（QPS * 4M < 网卡带宽）|
+|cache.write.flush-thread-num|128|【写操作】多Fd数据上传worker数量|
+|cache.write.commit-queue-len|100|【写操作】单Fd元数据提交队列长度|
 |cache.write.max-commit-heap-size|500|【写操作】单Fd元数据提交最大容量（无需设置）|
 |log.level|info|日志级别|
 |log.file.filename|default.log|日志文件名|
