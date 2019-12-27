@@ -6,9 +6,9 @@ mount-point="f4mxxxxxxxx-xxxx"
 renew-session-lease-time-sec=10
 
 [cache]
-latch-num=10
 update-sts-time-sec=30
 cos-client-timeout-sec=5
+inode-attr-expired-time-sec=30
 [cache.read]
 block-expired-time-sec=10
 max-block-num=256

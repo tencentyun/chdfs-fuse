@@ -82,9 +82,9 @@ mount-point="f4mxxxxxxxx-xxxx"
 renew-session-lease-time-sec=10
 
 [cache]
-latch-num=10
 update-sts-time-sec=30
 cos-client-timeout-sec=5
+inode-attr-expired-time-sec=30
 [cache.read]
 block-expired-time-sec=10
 max-block-num=256
@@ -120,9 +120,9 @@ max-backups=100
 |client.user|当前用户名|用户名|
 |client.group|当前组名|组名|
 |client.force-sync|false|强制sync，不依赖“-o sync”|
-|cache.latch-num|10|Fd哈希槽数量|
 |cache.update-sts-time-sec|30|数据读写临时密钥刷新时间（s）|
 |cache.cos-client-timeout-sec|5|数据上传/下载超时时间（s）|
+|cache.inode-attr-expired-time-sec|30|inode属性缓存有效时间（s）|
 |cache.read.block-expired-time-sec|10|【读操作】单Fd数据读缓存有效时间（s）（block粒度）|
 |cache.read.max-block-num|256|【读操作】单Fd数据读缓存block最大数量|
 |cache.read.read-ahead-block-num|15|【读操作】单Fd预读block数量（read-ahead-block-num < max-block-num）|
