@@ -8,6 +8,8 @@ chdfs-fuse基于fuse底层接口实现，主要功能包括：
 
 ## 安装
 ### 安装依赖
+为保障最优性能，建议linux kernel 5.0.0+。
+
 Ubuntu 14.04+:
 ```bash
 sudo apt-get install fuse
@@ -37,6 +39,10 @@ mkdir /mnt/chdfstest
  ```bash
 ./bin/chdfs-fuse -debug -allow_other /mnt/chdfstest/ --config=./conf/config.toml &
  ```
+- 同步模式
+```bash
+./bin/chdfs-fuse -debug -o sync /mnt/chdfstest/ --config=./conf/config.toml &
+```
  如果遇到类似“/mnt/chdfstest: Transport endpoint is not connected”等字样，通常是由于强杀进程导致无法重新挂载，建议先umount再mount：
 ```bash
  umount /mnt/chdfstest
@@ -113,6 +119,7 @@ max-backups=100
 |client.mount-point|-|远程挂载点，例：f4mxxxxxxxx-xxxx|
 |client.user|当前用户名|用户名|
 |client.group|当前组名|组名|
+|client.force-sync|false|强制sync，不依赖“-o sync”|
 |cache.latch-num|10|Fd哈希槽数量|
 |cache.update-sts-time-sec|30|数据读写临时密钥刷新时间（s）|
 |cache.cos-client-timeout-sec|5|数据上传/下载超时时间（s）|
