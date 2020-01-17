@@ -29,24 +29,24 @@ sudo yum install fuse
 chmod +x ./bin/chdfs-fuse
 #创建本地挂载目录
 mkdir /mnt/chdfstest
-./bin/chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml &
+nohup ./bin/chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml &
 ```
 - 调试模式（查看fuse接口调用）
  ```bash
-./bin/chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml &
+nohup ./bin/chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml &
  ```
 - 允许其他用户访问
  ```bash
-./bin/chdfs-fuse -debug -allow_other /mnt/chdfstest/ --config=./conf/config.toml &
+nohup ./bin/chdfs-fuse -debug -allow_other /mnt/chdfstest/ --config=./conf/config.toml &
  ```
 - 同步模式
 ```bash
-./bin/chdfs-fuse -debug -o sync /mnt/chdfstest/ --config=./conf/config.toml &
+nohup ./bin/chdfs-fuse -debug -o sync /mnt/chdfstest/ --config=./conf/config.toml &
 ```
  如果遇到类似“/mnt/chdfstest: Transport endpoint is not connected”等字样，通常是由于强杀进程导致无法重新挂载，建议先umount再mount：
 ```bash
  umount /mnt/chdfstest
- ./bin/chdfs-fuse /mnt/chdfstest/ -config=./conf/config.toml &
+ nohup ./bin/chdfs-fuse /mnt/chdfstest/ -config=./conf/config.toml &
 ```
 ### 取消挂载
 ```bash
@@ -99,6 +99,7 @@ max-cos-flush-qps=256
 flush-thread-num=128
 commit-queue-len=100
 max-commit-heap-size=500
+auto-merge=true
 
 [log]
 level="info"
@@ -135,6 +136,7 @@ max-backups=100
 |cache.write.flush-thread-num|128|【写操作】多Fd数据上传worker数量|
 |cache.write.commit-queue-len|100|【写操作】单Fd元数据提交队列长度|
 |cache.write.max-commit-heap-size|500|【写操作】单Fd元数据提交最大容量（无需设置）|
+|cache.write.auto-merge|true|【写操作】单Fd写时合并文件碎片|
 |log.level|info|日志级别|
 |log.file.filename|default.log|日志文件名|
 |log.file.log-rotate|true|日志分割|
