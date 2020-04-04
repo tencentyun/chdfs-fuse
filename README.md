@@ -26,31 +26,43 @@ sudo yum install fuse
 ### 挂载
 - 普通模式
 ```bash
+#添加可执行权限
 chmod +x ./bin/chdfs-fuse
 #创建本地挂载目录
 mkdir /mnt/chdfstest
+#挂载CHDFS至本地目录
 nohup ./bin/chdfs-fuse /mnt/chdfstest/ --config=./conf/config.toml &
+```
+**如需销毁文件系统，执行以下命令（请谨慎操作）：**
+```bash
+rm -r /mnt/chdfstest/*
 ```
 - 调试模式（查看fuse接口调用）
  ```bash
+#显示详细的fuse接口调用
 nohup ./bin/chdfs-fuse -debug /mnt/chdfstest/ --config=./conf/config.toml &
  ```
 - 允许其他用户访问
  ```bash
+#允许其他用户访问
 nohup ./bin/chdfs-fuse -debug -allow_other /mnt/chdfstest/ --config=./conf/config.toml &
  ```
 - 同步模式
 ```bash
+#内存的任何修改都会实时同步到CHDFS
 nohup ./bin/chdfs-fuse -debug -o sync /mnt/chdfstest/ --config=./conf/config.toml &
 ```
- 如果遇到类似“/mnt/chdfstest: Transport endpoint is not connected”等字样，通常是由于强杀进程导致无法重新挂载，建议先umount再mount：
+ 如果遇到类似“/mnt/chdfstest: Transport endpoint is not connected”等字样，通常是由于强杀进程导致无法重新挂载，建议先取消挂载再挂载：
 ```bash
  umount /mnt/chdfstest
  nohup ./bin/chdfs-fuse /mnt/chdfstest/ -config=./conf/config.toml &
 ```
 ### 取消挂载
 ```bash
+#取消挂载
 umount /mnt/chdfstest/
+#或者
+#fusermount -u /mnt/chdfstest/
 ```
 如果遇到类似“umount: /mnt/chdfstest/: target is busy.”等字样，通常是由于挂载点正在被使用，导致无法直接卸载，建议先查看在使用的进程：
 ```bash
