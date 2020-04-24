@@ -25,6 +25,8 @@ max-cos-flush-qps=256
 flush-thread-num=128
 commit-queue-len=100
 max-commit-heap-size=500
+auto-merge=true
+auto-sync-time-ms=1000
 
 [log]
 level="info"
