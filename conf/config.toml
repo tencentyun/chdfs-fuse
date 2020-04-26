@@ -9,6 +9,7 @@ renew-session-lease-time-sec=10
 update-sts-time-sec=30
 cos-client-timeout-sec=5
 inode-attr-expired-time-sec=30
+
 [cache.read]
 block-expired-time-sec=10
 max-block-num=256
@@ -17,6 +18,8 @@ read-ahead-block-num=15
 max-cos-load-qps=1024
 load-thread-num=128
 select-thread-num=64
+rand-read=false
+
 [cache.write]
 max-mem-table-range-num=32
 max-mem-table-size-mb=64

@@ -104,6 +104,7 @@ read-ahead-block-num=15
 max-cos-load-qps=1024
 load-thread-num=128
 select-thread-num=64
+rand-read=false
 [cache.write]
 max-mem-table-range-num=32
 max-mem-table-size-mb=64
@@ -143,6 +144,7 @@ max-backups=100
 |cache.read.max-cos-load-qps|1024|【读操作】多Fd数据下载最大QPS（QPS * 1M < 网卡带宽）|
 |cache.read.load-thread-num|128|【读操作】多Fd数据下载worker数量|
 |cache.read.select-thread-num|64|【读操作】多Fd元数据查询队列长度|
+|cache.read.rand-read|false|【读操作】随机读场景|
 |cache.write.max-mem-table-range-num|32|【写操作】单Fd当前数据写缓存range最大数量|
 |cache.write.mem-table-size-mb|64|【写操作】单Fd当前数据写缓存最大容量（MB）|
 |cache.write.max-cos-flush-qps|256|【写操作】多Fd数据上传最大QPS（QPS * 4M < 网卡带宽）|
