@@ -3,6 +3,7 @@ url="http://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com"
 
 [client]
 mount-point="f4mxxxxxxxx-xxxx"
+mount-sub-dir="/"
 renew-session-lease-time-sec=10
 
 [cache]

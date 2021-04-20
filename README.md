@@ -94,6 +94,7 @@ url="http://f4mxxxxxxxx-xxxx.chdfs.ap-beijing.myqcloud.com"
 
 [client]
 mount-point="f4mxxxxxxxx-xxxx"
+mount-sub-dir="/"
 renew-session-lease-time-sec=10
 
 [cache]
@@ -136,6 +137,7 @@ max-backups=100
 |security.ssl-ca-path|-|CA路径，例：/etc/ssl/certs/ca-bundle.crt|
 |client.renew-session-lease-time-sec|10|会话续租时间（s）|
 |client.mount-point|-|远程挂载点，例：f4mxxxxxxxx-xxxx|
+|client.mount-sub-dir|根目录|挂载子目录|
 |client.user|当前用户名|用户名|
 |client.group|当前组名|组名|
 |client.force-sync|false|强制sync开关，不依赖“-o sync”|
@@ -145,13 +147,13 @@ max-backups=100
 |cache.read.block-expired-time-sec|10|【读操作】单Fd数据读缓存有效时间（s）（block粒度）|
 |cache.read.max-block-num|256|【读操作】单Fd数据读缓存block最大数量|
 |cache.read.read-ahead-block-num|15|【读操作】单Fd预读block数量（read-ahead-block-num < max-block-num）|
-|cache.read.max-cos-load-qps|1024|【读操作】多Fd数据下载最大QPS（QPS * 1M < 网卡带宽）|
+|cache.read.max-cos-load-qps|1024|【读操作】多Fd数据下载最大QPS（QPS * 1MB < 网卡带宽）|
 |cache.read.load-thread-num|128|【读操作】多Fd数据下载worker数量|
 |cache.read.select-thread-num|64|【读操作】多Fd元数据查询worker数量|
 |cache.read.rand-read|false|【读操作】随机读场景开关|
 |cache.write.max-mem-table-range-num|32|【写操作】单Fd当前数据写缓存range最大数量|
 |cache.write.mem-table-size-mb|64|【写操作】单Fd当前数据写缓存最大容量（MB）|
-|cache.write.max-cos-flush-qps|256|【写操作】多Fd数据上传最大QPS（QPS * 4M < 网卡带宽）|
+|cache.write.max-cos-flush-qps|256|【写操作】多Fd数据上传最大QPS（QPS * 4MB < 网卡带宽）|
 |cache.write.flush-thread-num|128|【写操作】多Fd数据上传worker数量|
 |cache.write.commit-queue-len|100|【写操作】单Fd元数据提交队列长度|
 |cache.write.max-commit-heap-size|500|【写操作】单Fd元数据提交最大容量（无需设置）|
